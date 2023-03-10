@@ -3,7 +3,10 @@
 
 #include <string>
 
-using namespace std;
+using std::string;
+using std::istream;
+using std::cin;
+using std::cout;
 
 class Paquete
 {

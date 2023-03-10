@@ -15,7 +15,8 @@ enum OPCS_MENU {SALIR = 0,
                 RESPALDAR,
                 RESPALDAR_TABLA,
                 RESPALDAR_CSV,
-                RECUPERAR};
+                RECUPERAR,
+                ENCOGER};
 
 void menu(Paqueteria& paqueteria)
 {
@@ -35,6 +36,7 @@ void menu(Paqueteria& paqueteria)
         cout << "10. Respaldar Tabla" << endl;
         cout << "11. Respaldar CSV" << endl;
         cout << "12. Recuperar" << endl;
+        cout << "13. Encoger" << endl;
         cout << "0.  Salir" << endl;
         cout << "Escoge una opcion: ";
         cin >> op;
@@ -74,15 +76,6 @@ void menu(Paqueteria& paqueteria)
             paqueteria.mostrarTabla();
         }
 
-        else if (op == ELIMINAR) {
-            size_t pos;
-
-            cout << "Ingresa la posición del paquete a eliminar: ";
-            cin >> pos;
-            cin.ignore();
-            paqueteria.eliminar(pos);
-        }
-
         else if (op == ELIMINAR_INICIO) {
             paqueteria.eliminarInicio();
         }
@@ -105,6 +98,10 @@ void menu(Paqueteria& paqueteria)
 
         else if (op == RECUPERAR) {
             paqueteria.recuperarCSV();
+        }
+
+        else if (op == ENCOGER) {
+            paqueteria.encoger();
         }
 
         else if (op == SALIR) {
