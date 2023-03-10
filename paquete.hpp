@@ -1,12 +1,9 @@
-#ifndef PAQUETE_H
-#define PAQUETE_H
+#ifndef PAQUETE_HPP
+#define PAQUETE_HPP
 
 #include <string>
 
-using std::string;
-using std::istream;
-using std::cin;
-using std::cout;
+using namespace std;
 
 class Paquete
 {
@@ -35,35 +32,35 @@ class Paquete
         void setOrigen(const string& valor) {
             origen = valor;
         }
-        string getOrigen() {
+        string getOrigen() const{
             return origen;
         }
         void setDestino(const string& valor) {
             destino = valor;
         }
-        string getDestino() {
+        string getDestino() const{
             return destino;
         }
         void setDestinatario(const string& valor) {
             destinatario = valor;
         }
-        string getDestinatario() {
+        string getDestinatario() const{
             return destinatario;
         }
         void setPeso(double valor) {
             peso = valor;
         }
-        double getPeso() {
+        double getPeso() const{
             return peso;
         }
 
         friend istream& operator>>(istream& is, Paquete& paquete) {
             cout << "Origen: ";
-            cin >> paquete.origen;
+            getline(cin, paquete.origen);
             cout << "Destino: ";
-            cin >> paquete.destino;
+            getline(cin, paquete.destino);
             cout << "Destinatario: ";
-            cin >> paquete.destinatario;
+            getline(cin, paquete.destinatario);
             cout << "Peso: ";
             cin >> paquete.peso;
             
