@@ -1,14 +1,12 @@
 #include <iostream>
-#include "paqueteria.hpp"
-#include "menu.hpp"
+#include "../include/paqueteria.hpp"
+#include "../include/menu.hpp"
 
 using namespace std;
 
 int main()
 {
-    Paqueteria paqueteria;
-
-    menu(paqueteria);
+    menu();
 
     return 0;
 }

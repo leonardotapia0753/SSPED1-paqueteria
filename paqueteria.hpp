@@ -1,31 +1,34 @@
 #ifndef PAQUETERIA_HPP
 #define PAQUETERIA_HPP
 
-#include "paquete.hpp"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-
-#define INCREMENTO 5
+#include "paquete.hpp"
+#include "arreglo.hpp"
 
 using namespace std;
 
 class Paqueteria
 {
 private:
-    Paquete* paquetes;
-    size_t cont;
-    size_t tam;
+    Arreglo<Paquete> paquetes;
+    string nombre;
 
 public:
     Paqueteria();
     ~Paqueteria();
 
-    bool estaLlena() const;
-    bool estaVacia() const;
-
     void expandir();
     void encoger();
+
+    void setNombre(const string& nombre){
+        this->nombre = nombre;
+    }
+
+    string getNombre() {
+        return nombre;
+    }
 
     void agregarInicio(const Paquete &paquete);
     void agregarFinal(const Paquete &paquete);
@@ -47,153 +50,53 @@ public:
 
 Paqueteria::Paqueteria()
 {
-    cont = 0;
-    tam = INCREMENTO; 
-    paquetes = new Paquete[tam];
 }
 
 Paqueteria::~Paqueteria() {}
 
-bool Paqueteria::estaLlena() const
-{
-    return cont == tam;
-}
-
-bool Paqueteria::estaVacia() const
-{
-    return cont == 0;
-}
-
 void Paqueteria::expandir()
 {
-    Paquete* aux = new Paquete[tam + INCREMENTO];
-
-    for (size_t i = 0; i < cont; i++)
-    {
-        aux[i] = paquetes[i];
-    }
-
-    delete[] paquetes;
-
-    paquetes = aux;
-
-    tam = tam + INCREMENTO;
-
-    cout << endl << "Capacidad de la paqueteria = " << tam << endl;
-    cout << "Cantidad de paquetes almacenados = " << cont << endl << endl;
+    paquetes.expandir();
 }
 
 void Paqueteria::encoger()
 {
-    if (estaVacia())
-    {
-        cout << "No es posible encoger. Paqueteria vacia." << endl;
-        return;
-    }
-    else if (estaLlena())
-    {
-        cout << "No es posible encoger. Paqueteria llena." << endl;
-        return;
-    }
-
-    Paquete* aux = new Paquete[cont];
-
-    for (size_t i = 0; i < cont; i++)
-    {
-        aux[i] = paquetes[i];
-    }
-
-    delete[] paquetes;
-
-    paquetes = aux;
-
-    tam = cont;
-
-    cout << endl << "Capacidad de la paqueteria = " << tam << endl;
-    cout << "Cantidad de paquetes almacenados = " << cont << endl << endl;
+    paquetes.encoger();
 }
 
 void Paqueteria::agregarInicio(const Paquete &paquete)
 {
-    if (estaLlena())
-        expandir();
-
-    for (size_t i = cont; i > 0; i--)
-        paquetes[i] = paquetes[i - 1];
-
-    paquetes[0] = paquete;
-    cont++;
+    paquetes.agregarInicio(paquete);
 }
 
-void Paqueteria::agregarFinal(const Paquete &paquete)
+void Paqueteria::agregarFinal(const Paquete& paquete)
 {
-    if (estaLlena())
-        expandir();
-
-    paquetes[cont] = paquete;
-    cont++;
+    paquetes.agregarFinal(paquete);
 }
 
-void Paqueteria::insertar(const size_t pos, const Paquete &paquete)
+void Paqueteria::insertar(const size_t pos, const Paquete& paquete)
 {
-    if (estaLlena())
-        expandir();
-
-    if (pos > cont)
-    {
-        cout << "Posición no válida" << endl;
-        return;
-    }
-
-    for (size_t i = cont; i > pos; i--)
-        paquetes[i] = paquetes[i - 1];
-
-    paquetes[pos] = paquete;
-    cont++;
+    paquetes.insertar(pos, paquete);
 }
 
 void Paqueteria::eliminarInicio()
 {
-    if (estaVacia())
-    {
-        cout << "Paqueteria Vacia" << endl;
-        return;
-    }
-
-    for (size_t i = 0; i < cont - 1; i++)
-        paquetes[i] = paquetes[i + 1];
-
-    cont--;
+    paquetes.eliminarInicio();
 }
 
 void Paqueteria::eliminarFinal()
 {
-    if (estaVacia())
-    {
-        cout << "Paqueteria Vacia" << endl;
-        return;
-    }
-
-    cont--;
+    paquetes.eliminarFinal();
 }
 
 void Paqueteria::eliminar(const size_t pos)
 {
-    if (estaVacia())
-    {
-        cout << "Paqueteria Vacia" << endl;
-        return;
-    }
-
-    for (size_t i = pos; i < cont - 1; i++)
-        paquetes[i] = paquetes[i + 1];
-
-    cont--;
+    paquetes.eliminar(pos);
 }
 
 void Paqueteria::mostrar() const
 {
-    for (size_t i = 0; i < cont; i++)
+    for (size_t i = 0; i < paquetes.cantidad(); i++)
     {
         const Paquete &paquete = paquetes[i];
 
@@ -218,7 +121,7 @@ void Paqueteria::mostrarTabla() const
     cout << setw(5) << "Peso"
          << "|" << endl;
 
-    for (size_t i = 0; i < cont; i++)
+    for (size_t i = 0; i < paquetes.cantidad(); i++)
     {
         const Paquete &paquete = paquetes[i];
 
@@ -241,7 +144,7 @@ void Paqueteria::respaldar() const
         exit(EXIT_FAILURE);
     }
 
-    for (size_t i = 0; i < cont; i++)
+    for (size_t i = 0; i < paquetes.cantidad(); i++)
     {
         const Paquete &paquete = paquetes[i];
 
@@ -277,7 +180,7 @@ void Paqueteria::respaldarTabla() const
     archivo << setw(5) << "Peso"
             << "|" << endl;
 
-    for (size_t i = 0; i < cont; i++)
+    for (size_t i = 0; i < paquetes.cantidad(); i++)
     {
         const Paquete &paquete = paquetes[i];
 
@@ -311,7 +214,7 @@ void Paqueteria::respaldarCSV() const
             << ",";
     archivo << "Peso" << endl;
 
-    for (size_t i = 0; i < cont; i++)
+    for (size_t i = 0; i < paquetes.cantidad(); i++)
     {
         const Paquete &paquete = paquetes[i];
 

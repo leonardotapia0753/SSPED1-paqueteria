@@ -2,28 +2,12 @@
 #define MENU_HPP
 
 #include "paqueteria.hpp"
+#include "arreglo.hpp"
 
-enum OPCS_MENU {SALIR = 0, 
-                AGREGAR_INICIO, 
-                AGREGAR_FINAL,
-                INSERTAR,
-                MOSTRAR_PAQUETES, 
-                MOSTRAR_TABLA,
-                ELIMINAR,
-                ELIMINAR_INICIO,
-                ELIMINAR_FINAL,
-                RESPALDAR,
-                RESPALDAR_TABLA,
-                RESPALDAR_CSV,
-                RECUPERAR,
-                ENCOGER};
-
-void menu(Paqueteria& paqueteria)
+void menu_paqueteria(Paqueteria& paqueteria)
 {
-    int op;
-
     while (true) {
-        cout << "Menu Principal" << endl;
+        cout << "Menu de Paquetería: " << paqueteria.getNombre() << endl;
         cout << "1.  Agregar Paquete al Inicio" << endl;
         cout << "2.  Agregar Paquete al Final" << endl;
         cout << "3.  Insertar Paquete" << endl;
@@ -38,78 +22,149 @@ void menu(Paqueteria& paqueteria)
         cout << "12. Recuperar" << endl;
         cout << "13. Encoger" << endl;
         cout << "0.  Salir" << endl;
-        cout << "Escoge una opcion: ";
+        cout << "Escoge una opción: ";
+
+        string op;
         cin >> op;
         cin.ignore();
+
         cout << endl;
 
-        if (op == AGREGAR_INICIO) {
+        if (op == "1") {
             Paquete paquete;
 
             cin >> paquete;
             paqueteria.agregarInicio(paquete);
         }
 
-        else if (op == AGREGAR_FINAL) {
+        else if (op == "2") {
             Paquete paquete;
 
             cin >> paquete;
             paqueteria.agregarFinal(paquete);
         }
 
-        else if (op == INSERTAR) {
+        else if (op == "3") {
             Paquete paquete;
             size_t pos;
 
-            cout << "Ingresa la posicion de insercion: ";
+            cout << "Ingresa la posición de inserción: ";
             cin >> pos;
             cin.ignore();
             cin >> paquete;
             paqueteria.insertar(pos, paquete);
         }
 
-        else if (op == MOSTRAR_PAQUETES) {
+        else if (op == "4") {
             paqueteria.mostrar();
         }
 
-        else if (op == MOSTRAR_TABLA) {
+        else if (op == "5") {
             paqueteria.mostrarTabla();
         }
 
-        else if (op == ELIMINAR_INICIO) {
+        else if (op == "6") {
             paqueteria.eliminarInicio();
         }
 
-        else if (op == ELIMINAR_FINAL) {
+        else if (op == "7") {
             paqueteria.eliminarFinal();
         }
 
-        else if (op == RESPALDAR) {
+        else if (op == "8") {
             paqueteria.respaldar();
         }
 
-        else if (op == RESPALDAR_TABLA) {
+        else if (op == "9") {
             paqueteria.respaldarTabla();
         }
 
-        else if (op == RESPALDAR_CSV) {
+        else if (op == "10") {
             paqueteria.respaldarCSV();
         }
 
-        else if (op == RECUPERAR) {
+        else if (op == "11") {
             paqueteria.recuperarCSV();
         }
 
-        else if (op == ENCOGER) {
+        else if (op == "12") {
             paqueteria.encoger();
         }
 
-        else if (op == SALIR) {
+        else if (op == "0") {
             break;
         }
 
         cout << endl;
     }
 } 
+
+void menu() {
+
+    Arreglo<Paqueteria> paqueterias;
+
+    while (true) {
+        cout << "Menú de Paqueterías." << endl;
+        cout << "1. Crear Paquetería" << endl;
+        cout << "2. Eliminar Paquetería" << endl;
+        cout << "3. Buscar Paquetería" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Escoge una opción: ";
+
+        string op;
+
+        cin >> op;
+        cin.ignore();
+
+        cout << endl;
+
+        if (op == "1") {
+            string nombre;
+            cout << "Nombre de paquetería: ";
+            getline(cin, nombre);
+            cout << endl;
+
+            Paqueteria paqueteria;
+            paqueteria.setNombre(nombre);
+            
+            paqueterias.agregarFinal(paqueteria);
+        }
+
+        else if (op == "2") {
+            size_t posicion;
+
+            cout << "Posición a eliminar: ";
+            cin >> posicion;
+            cin.ignore();
+
+            paqueterias.eliminar(posicion);
+        }
+
+        else if (op == "3") {
+            string nombre;
+            cout << "Nombre de la paquetería: ";
+            getline(cin, nombre);
+            cout << endl;
+
+            for (size_t i = 0; i < paqueterias.cantidad(); i++)
+            {
+                if (nombre == paqueterias[i].getNombre()) {
+                    menu_paqueteria(paqueterias[i]);
+                    break;
+                }
+            }
+        }
+
+        else if (op == "0") {
+            break;
+        }
+
+        else {
+            cout << "Opción no valida. Intenta de nuevo.";
+        }
+
+        cout << endl;
+    }
+}
 
 #endif
