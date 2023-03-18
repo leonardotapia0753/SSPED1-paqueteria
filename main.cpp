@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include/paqueteria.hpp"
-#include "../include/menu.hpp"
+#include "paqueteria.hpp"
+#include "menu.hpp"
 
 using namespace std;
 
